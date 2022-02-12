@@ -1,0 +1,28 @@
+{
+  "name": "dqr-challenge",
+  "version": "1.0.0",
+  "description": "DQR Challenge",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rchedid/dqr-challenge.git"
+  },
+  "keywords": [],
+  "author": "Raissan Chedid (https://github.com/rchedid)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rchedid/dqr-challenge/issues"
+  },
+  "homepage": "https://github.com/rchedid/dqr-challenge#readme",
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "eslint": "^8.9.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4",
+    "jest": "^27.5.1",
+    "supertest": "^6.2.2"
+  }
+}
