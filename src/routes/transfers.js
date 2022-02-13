@@ -39,11 +39,11 @@ module.exports = app => {
     if (requestBody.amount === 0) ThrowValidationError(ValidationErrorMessages.zeroAmount);
 
     if (countNumberDigits(requestBody.amount).decimalPart > 2) {
-      ThrowValidationError(ValidationErrorMessages.moreThanTwoDecimals);
+      ThrowValidationError(ValidationErrorMessages.moreThan2Decimals);
     }
 
-    if (countNumberDigits(requestBody.amount).integerPart > 15) {
-      ThrowValidationError(ValidationErrorMessages.moreThanFifteenIntegerDigits);
+    if (countNumberDigits(requestBody.amount).integerPart > 14) {
+      ThrowValidationError(ValidationErrorMessages.moreThan14IntegerDigits);
     }
 
     app.services.transfer.create(transfer)

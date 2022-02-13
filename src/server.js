@@ -1,3 +1,7 @@
 const app = require('./app');
 
-app.listen(3456);
+const PORT = 3456;
+
+app.listen(PORT, () => {
+  console.log(`Transfer service listening on port ${PORT}`);
+});

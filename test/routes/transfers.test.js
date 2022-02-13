@@ -66,15 +66,15 @@ describe('Valid transfer solicitations', () => {
       });
   });
 
-  test('Should request liquidation if receives amount with 15 integer part digits', () => {
+  test('Should request liquidation if receives amount with 14 integer part digits', () => {
     return request(app)
       .post(MAIN_ROUTE)
-      .send({ amount: 111222333444555 })
+      .send({ amount: 11122233344455 })
       .then(res => {
         // make request to liquidation service
         expect(res.status).toBe(201);
         expect(res.body).toHaveProperty('internalId');
-        expect(res.body.amount).toBe('111222333444555.00');
+        expect(res.body.amount).toBe('11122233344455.00');
         expect(res.body.status).toBe('CREATED');
         expect(res.body.dueDate).toBe(new Date((new Date()).setHours(0, 0, 0, 0)).toISOString());
       });
@@ -133,11 +133,15 @@ describe('Invalid transfer solicitations', () => {
   });
 
   test('Shouldn\'t request liquidation if amount have more than 2 decimals', () => {
-    return invalidTransferTestTemplate({ amount: 100.123 }, ValidationErrorMessages.moreThanTwoDecimals);
+    return invalidTransferTestTemplate({ amount: 100.123 }, ValidationErrorMessages.moreThan2Decimals);
   });
 
-  test('Shouldn\'t request liquidation if amount have more than 15 integer digits', () => {
-    return invalidTransferTestTemplate({ amount: '9111222333444555' }, ValidationErrorMessages.moreThanFifteenIntegerDigits);
+  test('Shouldn\'t request liquidation if amount have more than 14 integer digits', () => {
+    return invalidTransferTestTemplate({ amount: 111222333444555 }, ValidationErrorMessages.moreThan14IntegerDigits);
+  });
+
+  test('Shouldn\'t request liquidation if amount have 14 integer digits and more than 2 decimals', () => {
+    return invalidTransferTestTemplate({ amount: 11122233344455.123 }, ValidationErrorMessages.moreThan2Decimals);
   });
 
   test('Shouldn\'t request liquidation with invalid due date', () => {

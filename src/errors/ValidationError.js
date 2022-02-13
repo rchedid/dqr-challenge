@@ -11,8 +11,8 @@ const ValidationErrorMessages = {
   missingAmount: 'Amount is required attribute',
   negativeAmount: 'Amount must be positive',
   zeroAmount: 'Amount must be greater than zero',
-  moreThanTwoDecimals: 'Amount must not have more than 2 decimals',
-  moreThanFifteenIntegerDigits: 'Amount must not have more than 15 integer digits',
+  moreThan2Decimals: 'Amount must not have more than 2 decimals',
+  moreThan14IntegerDigits: 'Amount must not have more than 14 integer digits',
   pastDueDate: 'Can\'t transfer with past due date',
   invalidDateFormat: 'Invalid date format. Accepted format is DD-MM-YYYY .',
 };
