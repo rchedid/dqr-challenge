@@ -1,25 +1,28 @@
 const express = require('express');
-const { format, addDays, subDays } = require('date-fns');
+const { ThrowValidationError } = require('../errors/ValidationError');
 
 module.exports = app => {
   const router = express.Router();
 
   router.post('/', (req, res, next) => {
-    const transfer = { ...req.body };
+    const requestBody = { ...req.body };
+    const transfer = {};
 
-    if (transfer.expectedOn) {
-      // data passada
-    }
+    transfer.due_date = requestBody.dueDate ?? new Date();
+    transfer.amount = requestBody.amount ?? ThrowValidationError('Amount is required property');
 
-    // if (!transfer.expectedOn) {
+    app.services.transfer.create(transfer)
+      .then(result => {
+        const clientResponse = {
+          internalId: result.id,
+          status: 'CREATED',
+          amount: result.amount,
+          dueDate: result.due_date,
+        };
 
-    // }
-
-    return res.status(201).send();
-
-    // app.services.transfer.save(transfer)
-    //   .then(result => res.status(201).json(result[0]))
-    //   .catch(err => next(err));
+        return res.status(201).json(clientResponse);
+      })
+      .catch(err => next(err));
   });
 
   return router;

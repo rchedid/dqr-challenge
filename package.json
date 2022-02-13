@@ -15,9 +15,9 @@
   },
   "scripts": {
     "start": "cross-env NODE_ENV=prod node src/server.js",
-    "test": "cross-env NODE_ENV=test jest --coverage --runInBand --forceExit",
-    "lint": "eslint src/** test/** --fix",
-    "secure-mode": "cross-env NODE_ENV=test jest --watch --verbose=false"
+    "test": "cross-env NODE_ENV=dev jest --coverage --runInBand --forceExit",
+    "lint": "eslint src/** dev/** --fix",
+    "secure-mode": "cross-env NODE_ENV=dev jest --watch --verbose=false"
   },
   "repository": {
     "type": "git",
@@ -42,7 +42,7 @@
     "body-parser": "^1.19.1",
     "consign": "^0.1.6",
     "cors": "^2.8.5",
-    "date-fns": "^2.28.0",
+    "dayjs": "^1.10.7",
     "express": "^4.17.2",
     "knex": "^1.0.3",
     "pg": "^8.7.3",

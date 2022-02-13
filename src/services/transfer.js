@@ -16,5 +16,13 @@ module.exports = app => {
   //   });
   // };
 
-  return {  };
+  const create = async transfer => {
+    const createdTransfer = await app.db('transfers').insert(transfer, '*');
+
+    // const response = {  };
+
+    return createdTransfer[0];
+  };
+
+  return { create };
 };

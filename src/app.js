@@ -32,6 +32,11 @@ app.get('/', (req, res) => {
   res.status(200).send();
 });
 
+app.use((req, res, next) => {
+  if (res.status(404)) res.status(404).json({ error: 'Not found' });
+  next();
+});
+
 app.use((err, req, res, next) => {
   const { name, message, stack } = err;
 

@@ -1,15 +1,15 @@
 module.exports = {
-  test: {
+  dev: {
     client: 'pg',
     version: '14.2',
     connection: {
       host: 'localhost',
       user: 'postgres',
       password: 'pass',
-      database: 'dqr-challenge-test',
+      database: 'dqr-challenge-dev',
     },
     migrations: { directory: 'src/migrations' },
-    seeds: { directory: 'src/seeds' },
+    // seeds: { directory: 'src/seeds' },
   },
   prod: {
     client: 'pg',
