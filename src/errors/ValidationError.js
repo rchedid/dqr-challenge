@@ -8,9 +8,8 @@ function ThrowValidationError(message) {
 }
 
 const ValidationErrorMessages = {
-  missingAmount: 'Amount is required attribute',
+  missingAmount: 'Amount is required',
   negativeAmount: 'Amount must be positive',
-  zeroAmount: 'Amount must be greater than zero',
   moreThan2Decimals: 'Amount must not have more than 2 decimals',
   moreThan14IntegerDigits: 'Amount must not have more than 14 integer digits',
   pastDueDate: 'Can\'t transfer with past due date',

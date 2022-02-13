@@ -115,7 +115,7 @@ describe('Invalid transfer solicitations', () => {
       .post(MAIN_ROUTE)
       .send({ ...validTransfer, ...newData })
       .then(res => {
-        expect(res.status).toBe(400);
+        expect(res.status).toBe(405);
         expect(res.body.error).toBe(errorMessage);
       });
   };
@@ -129,7 +129,7 @@ describe('Invalid transfer solicitations', () => {
   });
 
   test('Shouldn\'t request liquidation with amount equal to zero', () => {
-    return invalidTransferTestTemplate({ amount: 0 }, ValidationErrorMessages.zeroAmount);
+    return invalidTransferTestTemplate({ amount: 0 }, ValidationErrorMessages.missingAmount);
   });
 
   test('Shouldn\'t request liquidation if amount have more than 2 decimals', () => {

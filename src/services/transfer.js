@@ -1,28 +1,30 @@
-// const ValidationError = require('../errors/ValidationError');
+const DateUtils = require('../utils/DateUtils');
+const NumberUtils = require('../utils/NumberUtils');
+
+const { ThrowValidationError, ValidationErrorMessages } = require('../errors/ValidationError');
 
 module.exports = app => {
-  // const validate = async transfer => {
-  //   if (!transfer.description) throw new ValidationError('Description is required attribute');
-  //   if (!transfer.ammount) throw new ValidationError('Ammount is required attribute');
-  //   if (!transfer.date) throw new ValidationError('Date is required attribute');
-  //   if (!transfer.acc_ori_id) throw new ValidationError('Origin account ID is required attribute');
-  //   if (!transfer.acc_dest_id) throw new ValidationError('Destination account ID is required attribute');
-  //   if (transfer.acc_ori_id === transfer.acc_dest_id) throw new ValidationError('Can\'t transfer to same account');
+  const validate = async requestBody => {
+    if (requestBody.dueDate && !DateUtils.dateFormatIsValid(requestBody.dueDate)) ThrowValidationError(ValidationErrorMessages.invalidDateFormat);
+    if (DateUtils.countDateDifferenceFromToday(requestBody.dueDate) > 0) ThrowValidationError(ValidationErrorMessages.pastDueDate);
 
-  //   const accounts = await app.db('accounts').whereIn('id', [transfer.acc_dest_id, transfer.acc_ori_id]);
+    if (!requestBody.amount) ThrowValidationError(ValidationErrorMessages.missingAmount);
+    if (requestBody.amount < 0) ThrowValidationError(ValidationErrorMessages.negativeAmount);
+    if (requestBody.amount === 0) ThrowValidationError(ValidationErrorMessages.zeroAmount);
 
-  //   accounts.forEach(acc => {
-  //     if (acc.user_id !== parseInt(transfer.user_id, 10)) throw new ValidationError('Account doesn\'t belongs to user');
-  //   });
-  // };
+    if (NumberUtils.countNumberDigits(requestBody.amount).decimalPart > 2) {
+      ThrowValidationError(ValidationErrorMessages.moreThan2Decimals);
+    }
+
+    if (NumberUtils.countNumberDigits(requestBody.amount).integerPart > 14) {
+      ThrowValidationError(ValidationErrorMessages.moreThan14IntegerDigits);
+    }
+  };
 
   const create = async transfer => {
     const createdTransfer = await app.db('transfers').insert(transfer, '*');
-
-    // const response = {  };
-
     return createdTransfer[0];
   };
 
-  return { create };
+  return { create, validate };
 };

@@ -40,7 +40,7 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   const { name, message, stack } = err;
 
-  if (name === 'ValidationError') res.status(400).json({ error: message });
+  if (name === 'ValidationError') res.status(405).json({ error: message });
   else {
     const id = uuidv4();
     app.log.error({ id, name, message, stack });
