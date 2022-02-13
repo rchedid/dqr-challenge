@@ -1,12 +1,12 @@
 const app = require('express')();
 const consign = require('consign');
-// const knex = require('knex');
+const knex = require('knex');
 const winston = require('winston');
 const { v4: uuidv4 } = require('uuid');
 
-// const knexFile = require('../knexfile');
+const knexFile = require('../knexfile');
 
-// app.db = knex(knexFile[process.env.NODE_ENV]);
+app.db = knex(knexFile[process.env.NODE_ENV]);
 
 app.log = winston.createLogger({
   level: 'debug',
@@ -36,7 +36,6 @@ app.use((err, req, res, next) => {
   const { name, message, stack } = err;
 
   if (name === 'ValidationError') res.status(400).json({ error: message });
-  else if (name === 'InvalidResourceError') res.status(403).json({ error: message });
   else {
     const id = uuidv4();
     app.log.error({ id, name, message, stack });
