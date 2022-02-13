@@ -10,100 +10,47 @@ const app = require('../../src/app');
 const MAIN_ROUTE = '/v1/transfers';
 
 describe('Valid transfer solicitations', () => {
-  test('Should request liquidation with current date if no due date is received and amount have 2 decimals', () => {
+  const validTransfer = { amount: 10000, dueDate: dayjs().format('DD-MM-YYYY') };
+
+  const validTransferTestTemplate = async newData => {
     return request(app)
       .post(MAIN_ROUTE)
-      .send({ amount: 10000.12 })
+      .send({ ...validTransfer, ...newData })
       .then(res => {
-        // make request to liquidation service
         expect(res.status).toBe(201);
         expect(res.body).toHaveProperty('internalId');
-        expect(res.body.amount).toBe('10000.12');
+        expect(res.body.amount).toBe(typeof (newData.amount) === 'string' ? Number(newData.amount).toFixed(2) : newData.amount.toFixed(2));
         expect(res.body.status).toBe('CREATED');
-        expect(res.body.dueDate).toBe(new Date((new Date()).setHours(0, 0, 0, 0)).toISOString());
+        expect(res.body.dueDate).toBe(dayjs(newData.dueDate ?? validTransfer.dueDate, 'DD-MM-YYYY').toISOString());
       });
+  };
+
+  test('Should request liquidation with current date if no due date is received and amount have 2 decimals', () => {
+    return validTransferTestTemplate({ amount: 10000.12, dueDate: null });
   });
 
   test('Should request liquidation if amount does\'nt have decimals', () => {
-    return request(app)
-      .post(MAIN_ROUTE)
-      .send({ amount: 10000 })
-      .then(res => {
-        // make request to liquidation service
-        expect(res.status).toBe(201);
-        expect(res.body).toHaveProperty('internalId');
-        expect(res.body.amount).toBe('10000.00');
-        expect(res.body.status).toBe('CREATED');
-        expect(res.body.dueDate).toBe(new Date((new Date()).setHours(0, 0, 0, 0)).toISOString());
-      });
+    return validTransferTestTemplate({ amount: 10000 });
   });
 
   test('Should request liquidation if amount have 1 decimal', () => {
-    return request(app)
-      .post(MAIN_ROUTE)
-      .send({ amount: 10000.1 })
-      .then(res => {
-        // make request to liquidation service
-        expect(res.status).toBe(201);
-        expect(res.body).toHaveProperty('internalId');
-        expect(res.body.amount).toBe('10000.10');
-        expect(res.body.status).toBe('CREATED');
-        expect(res.body.dueDate).toBe(new Date((new Date()).setHours(0, 0, 0, 0)).toISOString());
-      });
+    return validTransferTestTemplate({ amount: 10000.1 });
   });
 
   test('Should request liquidation if receives amount as string', () => {
-    return request(app)
-      .post(MAIN_ROUTE)
-      .send({ amount: '10000.1' })
-      .then(res => {
-        // make request to liquidation service
-        expect(res.status).toBe(201);
-        expect(res.body).toHaveProperty('internalId');
-        expect(res.body.amount).toBe('10000.10');
-        expect(res.body.status).toBe('CREATED');
-        expect(res.body.dueDate).toBe(new Date((new Date()).setHours(0, 0, 0, 0)).toISOString());
-      });
+    return validTransferTestTemplate({ amount: '10000.1' });
   });
 
   test('Should request liquidation if receives amount with 14 integer part digits', () => {
-    return request(app)
-      .post(MAIN_ROUTE)
-      .send({ amount: 11122233344455 })
-      .then(res => {
-        // make request to liquidation service
-        expect(res.status).toBe(201);
-        expect(res.body).toHaveProperty('internalId');
-        expect(res.body.amount).toBe('11122233344455.00');
-        expect(res.body.status).toBe('CREATED');
-        expect(res.body.dueDate).toBe(new Date((new Date()).setHours(0, 0, 0, 0)).toISOString());
-      });
+    return validTransferTestTemplate({ amount: 11122233344455 });
   });
 
   test('Should request liquidation if due date is equal than the current date', () => {
-    return request(app)
-      .post(MAIN_ROUTE)
-      .send({ amount: 10000, dueDate: dayjs().format('DD-MM-YYYY') })
-      .then(res => {
-        expect(res.status).toBe(201);
-        expect(res.body).toHaveProperty('internalId');
-        expect(res.body.amount).toBe('10000.00');
-        expect(res.body.status).toBe('CREATED');
-        expect(res.body.dueDate).toBe(new Date((new Date()).setHours(0, 0, 0, 0)).toISOString());
-      });
+    return validTransferTestTemplate({ amount: 10000, dueDate: dayjs().format('DD-MM-YYYY') });
   });
 
   test('Should request liquidation if due date is later than the current date', () => {
-    return request(app)
-      .post(MAIN_ROUTE)
-      .send({ amount: 10000, dueDate: dayjs().add(1, 'day').format('DD-MM-YYYY') })
-      .then(res => {
-        expect(res.status).toBe(201);
-        expect(res.body).toHaveProperty('internalId');
-        expect(res.body.amount).toBe('10000.00');
-        expect(res.body.status).toBe('CREATED');
-        expect(res.body.dueDate).toBe(dayjs(dayjs().add(1, 'day').format('DD-MM-YYYY'), 'DD-MM-YYYY').toISOString());
-      });
+    return validTransferTestTemplate({ amount: 10000, dueDate: dayjs().add(1, 'day').format('DD-MM-YYYY') });
   });
 });
 
