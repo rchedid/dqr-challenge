@@ -26,5 +26,17 @@ module.exports = app => {
     return createdTransfer[0];
   };
 
-  return { create, validate };
+  const find = (filter = {}) => {
+    return app.db('transfers')
+      .where(filter)
+      .select();
+  };
+
+  const findOne = (filter = {}) => {
+    return app.db('transfers')
+      .where(filter)
+      .first();
+  };
+
+  return { create, validate, find, findOne };
 };

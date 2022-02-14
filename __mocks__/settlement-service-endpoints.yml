@@ -1,0 +1,79 @@
+- request:
+    url: ^/paymentOrders$
+    method: POST
+    headers:
+      content-type: application/json
+  response:
+    - status: 201
+      headers:
+        content-type: application/json
+      body: >
+        {
+          "internalId": "12345",
+          "status": "CREATED"
+        }
+
+- request:
+    url: ^/paymentOrders/1111
+    method: GET
+  response:
+    - status: 201
+      headers:
+        content-type: application/json
+      body: >
+        {
+          "internalId": "1111",
+          "externalId": "9876",
+          "status": "APPROVED",
+          "amount": 1000,
+          "expectedOn": "01-03-2022"
+        }
+
+- request:
+    url: ^/paymentOrders/2222
+    method: GET
+  response:
+    - status: 201
+      headers:
+        content-type: application/json
+      body: >
+        {
+          "internalId": "2222",
+          "externalId": "9876",
+          "status": "CREATED",
+          "amount": 1000,
+          "expectedOn": "01-03-2022"
+        }
+
+- request:
+    url: ^/paymentOrders/3333
+    method: GET
+  response:
+    - status: 201
+      headers:
+        content-type: application/json
+      body: >
+        {
+          "internalId": "3333",
+          "externalId": "9876",
+          "status": "SCHEDULED",
+          "amount": 1000,
+          "expectedOn": "01-03-2022"
+        }
+
+- request:
+    url: ^/paymentOrders/4444
+    method: GET
+  response:
+    - status: 201
+      headers:
+        content-type: application/json
+      body: >
+        {
+          "internalId": "4444",
+          "externalId": "9876",
+          "status": "REJECTED",
+          "amount": 1000,
+          "expectedOn": "01-03-2022"
+        }
+

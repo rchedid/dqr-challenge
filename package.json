@@ -9,7 +9,8 @@
     "test": "cross-env NODE_ENV=test jest --coverage --runInBand --forceExit",
     "posttest": "knex migrate:rollback --env test",
     "lint": "eslint src/** __test__/** --fix",
-    "secure-mode": "cross-env NODE_ENV=test jest --watch --verbose=false"
+    "secure-mode": "cross-env NODE_ENV=test jest --watch --verbose=false",
+    "stubby": "stubby -d __mocks__/settlement-service-endpoints.yml"
   },
   "repository": {
     "type": "git",
@@ -31,6 +32,7 @@
     "supertest": "^6.2.2"
   },
   "dependencies": {
+    "axios": "^0.26.0",
     "body-parser": "^1.19.1",
     "consign": "^0.1.6",
     "cors": "^2.8.5",
@@ -38,6 +40,7 @@
     "express": "^4.17.2",
     "knex": "^1.0.3",
     "pg": "^8.7.3",
+    "stubby": "^5.1.0",
     "uuid": "^8.3.2",
     "winston": "^3.6.0"
   }
