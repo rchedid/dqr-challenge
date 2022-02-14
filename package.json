@@ -6,8 +6,9 @@
   "scripts": {
     "start": "cross-env NODE_ENV=prod node src/server.js",
     "pretest": "knex migrate:latest --env test",
-    "test": "cross-env NODE_ENV=test jest --coverage --runInBand --forceExit",
-    "posttest": "knex migrate:rollback --env test",
+    "test": "npm-run-all jest-test rollback-migrate --continue-on-error",
+    "jest-test": "cross-env NODE_ENV=test jest --coverage",
+    "rollback-migrate": "knex migrate:rollback --env test",
     "lint": "eslint src/** __test__/** --fix",
     "secure-mode": "cross-env NODE_ENV=test jest --watch --verbose=false",
     "stubby": "stubby -d __mocks__/settlement-service-endpoints.yml"
@@ -39,6 +40,7 @@
     "dayjs": "^1.10.7",
     "express": "^4.17.2",
     "knex": "^1.0.3",
+    "npm-run-all": "^4.1.5",
     "pg": "^8.7.3",
     "stubby": "^5.1.0",
     "swagger-ui-express": "^4.3.0",

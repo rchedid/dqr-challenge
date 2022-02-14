@@ -10,7 +10,7 @@ module.exports = app => {
 
     if (!requestBody.amount) ThrowValidationError(ValidationErrorMessages.missingAmount);
     if (requestBody.amount < 0) ThrowValidationError(ValidationErrorMessages.negativeAmount);
-    if (requestBody.amount === 0) ThrowValidationError(ValidationErrorMessages.zeroAmount);
+    if (requestBody.amount === 0) ThrowValidationError(ValidationErrorMessages.missingAmount);
 
     if (NumberUtils.countNumberDigits(requestBody.amount).decimalPart > 2) {
       ThrowValidationError(ValidationErrorMessages.moreThan2Decimals);

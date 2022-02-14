@@ -34,8 +34,6 @@ module.exports = app => {
 
         console.log(settlementResponse);
 
-        // TODO salvar no BD o settlementResponse.internalId -> id da liquidação
-
         const clientResponse = {
           internalId: result.id,
           status: settlementResponse.status,

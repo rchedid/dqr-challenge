@@ -9,57 +9,9 @@ const app = require('../src/app');
 
 const MAIN_ROUTE = '/v1/transfers';
 
-beforeEach(async () => {
+beforeAll(async () => {
   return app.db('transfers').del();
 });
-
-// test('List all transfer solicitations', () => {
-//   return request(app).get(MAIN_ROUTE)
-//     .then(res => {
-//       expect(res.status).toBe(200);
-//       expect(res.body.length).toBeGreaterThan(0);
-//     });
-// });
-
-// test('Return transfer by ID', () => {
-//   return request(app).get(`${MAIN_ROUTE}/10000`)
-//     .then(res => {
-//       expect(res.status).toBe(200);
-//     });
-// });
-
-// describe('When remove transfer', () => {
-//   test('Must return 204 status', () => {
-//     return request(app).delete(`${MAIN_ROUTE}/10000`)
-//       .set('authorization', `bearer ${TOKEN}`)
-//       .then(res => {
-//         expect(res.status).toBe(204);
-//       });
-//   });
-
-//   test('Transfer must be deleted', () => {
-//     return app.db('transfers').where({ id: 10000 })
-//       .then(result => {
-//         expect(result).toHaveLength(0);
-//       });
-//   });
-
-//   test('Associated transactions must be removed', () => {
-//     return app.db('transactions').where({ transfer_id: 10000 })
-//       .then(result => {
-//         expect(result).toHaveLength(0);
-//       });
-//   });
-// });
-
-// test('Can\'t return another user transfer', () => {
-//   return request(app).get(`${MAIN_ROUTE}/10001`)
-//     .set('authorization', `bearer ${TOKEN}`)
-//     .then(res => {
-//       expect(res.status).toBe(403);
-//       expect(res.body.error).toBe('This resource don\'t belongs to user');
-//     });
-// });
 
 describe('Valid transfer solicitations', () => {
   const validTransfer = { amount: 10000, dueDate: dayjs().format('DD-MM-YYYY') };
@@ -103,6 +55,26 @@ describe('Valid transfer solicitations', () => {
 
   test('Should request liquidation if due date is later than the current date', () => {
     return validTransferTestTemplate({ amount: 10000, dueDate: dayjs().add(1, 'day').format('DD-MM-YYYY') });
+  });
+
+  test('List all transfer solicitations', () => {
+    return request(app).get(MAIN_ROUTE)
+      .then(res => {
+        expect(res.status).toBe(200);
+        expect(res.body.length).toBeGreaterThan(0);
+      });
+  });
+
+  test('Return transfer by ID', () => {
+    return request(app).get(`${MAIN_ROUTE}/1`)
+      .then(res => {
+        expect(res.status).toBe(200);
+        expect(res.body).toHaveProperty('internalId');
+        expect(res.body).toHaveProperty('externalId');
+        expect(res.body).toHaveProperty('status');
+        expect(res.body).toHaveProperty('amount');
+        expect(res.body).toHaveProperty('expectedOn');
+      });
   });
 });
 
@@ -150,4 +122,9 @@ describe('Invalid transfer solicitations', () => {
   test('Shouldn\'t request liquidation with past due date', () => {
     return invalidTransferTestTemplate({ dueDate: dayjs().subtract(1, 'day').format('DD-MM-YYYY') }, ValidationErrorMessages.pastDueDate);
   });
+});
+
+afterAll(done => {
+  app.db.destroy();
+  done();
 });
