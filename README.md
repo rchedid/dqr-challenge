@@ -1,5 +1,7 @@
 # Example Bank Transfer Service
 
+*Developed using TDD*
+
 This is an example of a service for handling money transfers which sends solicitations to settlements service.
 
 ## Basic stack used
