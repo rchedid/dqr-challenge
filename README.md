@@ -21,7 +21,7 @@ To test app, first run `npm run stubby` to init mock server, and then run `npm t
 
 ## Run
 
-To run app, first exectute`npm run stubby` to init mock server and then run `npm start`. 
+To run app, first exectute`npm run stubby` to init mock server and then run `npm start`. Use `POST /v1/transfers` to create a transfer solicitation. After creating at least 4 transfers, you can see 4 different returns from Settlements API mock using `GET /v1/transfers/{id}`.
 
 ### Docs
 
