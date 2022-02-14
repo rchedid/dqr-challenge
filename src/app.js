@@ -32,15 +32,19 @@ app.get('/', (req, res) => {
   res.status(200).send();
 });
 
+app.get('/internal-server-error', () => {
+  throw new Error('Simulating internal server error');
+});
+
 app.use((req, res, next) => {
-  if (res.status(404)) res.status(404).json({ error: 'Not found' });
-  next();
+  if (res.status(404)) res.status(404).json({ error: `Path ${req.path} not found` });
+  else next();
 });
 
 app.use((err, req, res, next) => {
   const { name, message, stack } = err;
 
-  if (name === 'ValidationError') res.status(405).json({ error: message });
+  if (name === 'ValidationError') res.status(400).json({ error: message });
   else {
     const id = uuidv4();
     app.log.error({ id, name, message, stack });

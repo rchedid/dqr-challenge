@@ -1,13 +1,17 @@
 const request = require('supertest');
 const dayjs = require('dayjs');
 const customParseFormat = require('dayjs/plugin/customParseFormat');
-const { ValidationErrorMessages } = require('../../src/errors/ValidationError');
+const { ValidationErrorMessages } = require('../src/errors/ValidationError');
 
 dayjs.extend(customParseFormat);
 
-const app = require('../../src/app');
+const app = require('../src/app');
 
 const MAIN_ROUTE = '/v1/transfers';
+
+beforeEach(async () => {
+  return app.db('transfers').del();
+});
 
 describe('Valid transfer solicitations', () => {
   const validTransfer = { amount: 10000, dueDate: dayjs().format('DD-MM-YYYY') };
@@ -62,7 +66,7 @@ describe('Invalid transfer solicitations', () => {
       .post(MAIN_ROUTE)
       .send({ ...validTransfer, ...newData })
       .then(res => {
-        expect(res.status).toBe(405);
+        expect(res.status).toBe(400);
         expect(res.body.error).toBe(errorMessage);
       });
   };
