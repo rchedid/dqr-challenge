@@ -1,0 +1,176 @@
+{
+	"info": {
+		"_postman_id": "50ba61b1-c68b-47d2-8ab5-9a9e0d687ae9",
+		"name": "DQR Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "v1",
+			"item": [
+				{
+					"name": "Create transfer solicitation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"amount\": \"11455.22\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_HOST}}/v1/transfers",
+							"host": [
+								"{{API_HOST}}"
+							],
+							"path": [
+								"v1",
+								"transfers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all transfer solicitations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_HOST}}/v1/transfers",
+							"host": [
+								"{{API_HOST}}"
+							],
+							"path": [
+								"v1",
+								"transfers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get transfer solicitation by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_HOST}}/v1/transfers/1",
+							"host": [
+								"{{API_HOST}}"
+							],
+							"path": [
+								"v1",
+								"transfers",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Settlements Service API",
+			"item": [
+				{
+					"name": "Create transfer settlement [Stubby]",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"externalId\": \"9876\", \"amount\": 1000, \"expectedOn\": \"01-03-2022\" }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://0.0.0.0:8882/paymentOrders",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8882",
+							"path": [
+								"paymentOrders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get transfer settlement [Stubby]",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"externalId\": \"121234\", \"amount\": 1000, \"expectedOn\": \"01-12-2022\" }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://0.0.0.0:8882/paymentOrders/12345",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8882",
+							"path": [
+								"paymentOrders",
+								"12345"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "API_HOST",
+			"value": "http://localhost:3456",
+			"type": "string"
+		}
+	]
+}
