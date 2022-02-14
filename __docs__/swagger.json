@@ -1,0 +1,212 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Example Bank Transfer Service",
+    "description": "This is a service for handling money transfers",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Raissan Chedid",
+      "url": "https://github.com/rchedid"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3456/v1",
+      "description": "Test API"
+    },
+    {
+      "url": "https://bank-abc:3456/v1",
+      "description": "Production API - only for demonstration"
+    }
+  ],
+  "paths": {
+    "/transfers": {
+      "post": {
+        "summary": "Create transfer solicitation",
+        "description": "This route creates a transfer solicitation and send information to settlements service",
+        "tags": [
+          "Transfers"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Transfer"
+              },
+              "examples": {
+                "transfer": {
+                  "value": {
+                    "amount": 10000,
+                    "dueDate": "24-04-2022"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Transfer solicitation created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedTransferResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all transfer solicitations",
+        "description": "This route list all transfer solicitations",
+        "tags": [
+          "Transfers"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number"
+                      },
+                      "amount": {
+                        "type": "number"
+                      },
+                      "due_date": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transfers/{id}": {
+      "get": {
+        "summary": "Get transfer solicitation by ID",
+        "description": "This route search a transfer solicitation by ID",
+        "tags": [
+          "Transfers"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Transfer ID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "amount": {
+                      "type": "number"
+                    },
+                    "due_date": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Transfer": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number"
+          },
+          "dueDate": {
+            "type": "string"
+          }
+        }
+      },
+      "CreatedTransferResponse": {
+        "type": "object",
+        "properties": {
+          "internalId": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "dueDate": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
