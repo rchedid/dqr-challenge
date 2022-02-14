@@ -14,64 +14,64 @@
         }
 
 - request:
-    url: ^/paymentOrders/1111
+    url: ^/paymentOrders/1
     method: GET
   response:
-    - status: 201
+    - status: 200
       headers:
         content-type: application/json
       body: >
         {
-          "internalId": "1111",
-          "externalId": "9876",
+          "internalId": "1",
+          "externalId": "1",
           "status": "APPROVED",
           "amount": 1000,
           "expectedOn": "01-03-2022"
         }
 
 - request:
-    url: ^/paymentOrders/2222
+    url: ^/paymentOrders/2
     method: GET
   response:
-    - status: 201
+    - status: 200
       headers:
         content-type: application/json
       body: >
         {
-          "internalId": "2222",
-          "externalId": "9876",
+          "internalId": "2",
+          "externalId": "2",
           "status": "CREATED",
           "amount": 1000,
           "expectedOn": "01-03-2022"
         }
 
 - request:
-    url: ^/paymentOrders/3333
+    url: ^/paymentOrders/3
     method: GET
   response:
-    - status: 201
+    - status: 200
       headers:
         content-type: application/json
       body: >
         {
-          "internalId": "3333",
-          "externalId": "9876",
+          "internalId": "3",
+          "externalId": "3",
           "status": "SCHEDULED",
           "amount": 1000,
           "expectedOn": "01-03-2022"
         }
 
 - request:
-    url: ^/paymentOrders/4444
+    url: ^/paymentOrders/4
     method: GET
   response:
-    - status: 201
+    - status: 200
       headers:
         content-type: application/json
       body: >
         {
-          "internalId": "4444",
-          "externalId": "9876",
+          "internalId": "4",
+          "externalId": "4",
           "status": "REJECTED",
           "amount": 1000,
           "expectedOn": "01-03-2022"

@@ -56,7 +56,19 @@ module.exports = app => {
 
   router.get('/:id', (req, res, next) => {
     app.services.transfer.findOne({ id: req.params.id })
-      .then(result => res.status(200).json(result))
+      .then(async result => {
+        let settlementResponse;
+
+        await axios.get(`http://0.0.0.0:8882/paymentOrders/${result.id}`)
+          .then(response => {
+            settlementResponse = response.data;
+          })
+          .catch(err => next(err));
+
+        console.log(settlementResponse);
+
+        return res.status(200).json(settlementResponse);
+      })
       .catch(err => next(err));
   });
 
